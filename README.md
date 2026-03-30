@@ -81,7 +81,7 @@ Besøg `http://localhost:8080`.
 
 ## Byg din egen container
 
-Der ligger et lille eksempel i [examples/flask-demo](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-demo).
+Der ligger et lille eksempel i [examples/flask-demo](examples/flask-demo).
 
 Byg imaget:
 
@@ -125,7 +125,7 @@ cat output/hilsen.txt
 
 ## Docker Compose med web og database
 
-Der ligger et eksempel i [examples/flask-postgres](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-postgres).
+Der ligger et eksempel i [examples/flask-postgres](examples/flask-postgres).
 
 Kør det lokalt:
 
@@ -213,7 +213,7 @@ kind load docker-image flask-demo:local --name workshop
 
 ## Trin 6: Deploy appen i Kubernetes
 
-Der ligger manifests i [examples/flask-demo/k8s](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-demo/k8s).
+Der ligger manifests i [examples/flask-demo/k8s](examples/flask-demo/k8s).
 
 Anvend dem:
 
@@ -291,7 +291,7 @@ kind delete cluster --name workshop
 
 ## Ekstra øvelse: Fra Compose til Kubernetes
 
-I [examples/flask-postgres/k8s](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-postgres/k8s) ligger et bevidst simpelt eksempel på den samme app som i Compose-udgaven.
+I [examples/flask-postgres/k8s](examples/flask-postgres/k8s) ligger et bevidst simpelt eksempel på den samme app som i Compose-udgaven.
 
 Det er ikke et produktionssetup. Det er et læringssetup.
 
@@ -349,7 +349,7 @@ Det er den vigtigste forskel:
 - I `kind` får du et færdigt cluster med det samme
 - I Talos-setuppet bygger vi clusteret bevidst op fra bunden
 
-Denne del er inspireret af vores setup i [DevOps-kubernetes-master](/home/kasc/projects/DevOps-kubernetes-master).
+Denne del er inspireret af vores setup i `DevOps-kubernetes-master`.
 
 ## Den mentale overgang
 
@@ -375,7 +375,7 @@ Kort sagt:
 
 ## Hvordan vores setup er bygget op
 
-Det overordnede flow ligger i [cluster.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/cluster.yml).
+Det overordnede flow ligger i `ansible/playbooks/cluster.yml` i `DevOps-kubernetes-master`.
 
 Her er ideen:
 
@@ -390,7 +390,7 @@ Det er en vigtig opdeling, fordi den skiller platform fra workloads.
 
 ## Hvad sker der i praksis?
 
-Provisioneringsflowet ligger i [deploy-infra.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/talos/deploy-infra.yml).
+Provisioneringsflowet ligger i `ansible/playbooks/talos/deploy-infra.yml` i `DevOps-kubernetes-master`.
 
 Det kan læses som fire hovedtrin:
 
@@ -405,7 +405,7 @@ Det er meget tættere på et rigtigt cluster-livscyklusforløb end `kind`.
 
 I workshoppen så du pods og deployments. I Talos-setuppet skal vi først have maskinerne.
 
-Control plane provisioning sker i [control-plane/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/hypervisor/talos-vm/control-plane/tasks/main.yml).
+Control plane provisioning sker i `ansible/roles/hypervisor/talos-vm/control-plane/tasks/main.yml` i `DevOps-kubernetes-master`.
 
 Der sker blandt andet dette:
 
@@ -414,7 +414,7 @@ Der sker blandt andet dette:
 - Konfigurationen bliver lagt ind som VM boot-parameter
 - VM'en bliver oprettet i vSphere
 
-Worker provisioning i [worker-node/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/hypervisor/talos-vm/worker-node/tasks/main.yml) følger samme mønster, men med worker-konfiguration.
+Worker provisioning i `ansible/roles/hypervisor/talos-vm/worker-node/tasks/main.yml` i `DevOps-kubernetes-master` følger samme mønster, men med worker-konfiguration.
 
 Det er den konkrete version af:
 
@@ -423,7 +423,7 @@ Det er den konkrete version af:
 
 ## Bootstrap: hvornår bliver det til et rigtigt cluster?
 
-Det step ligger i [bootstrap/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/bootstrap/tasks/main.yml).
+Det step ligger i `ansible/roles/talos/bootstrap/tasks/main.yml` i `DevOps-kubernetes-master`.
 
 Her bliver en control plane node brugt til at bootstrappe clusteret, og de andre control planes bliver bagefter koblet på.
 
@@ -437,7 +437,7 @@ Det er et godt sted at forbinde teori og praksis:
 
 I `kind` tænker man ikke så meget over API-endpointet. I et rigtigt setup betyder det mere.
 
-I [configure-vip/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/configure-vip/tasks/main.yml) bliver control plane-konfigurationen patched, så API'et peger på en virtuel IP.
+I `ansible/roles/talos/configure-vip/tasks/main.yml` i `DevOps-kubernetes-master` bliver control plane-konfigurationen patched, så API'et peger på en virtuel IP.
 
 Det løser et konkret problem:
 
@@ -450,7 +450,7 @@ Det er samme slags stabilitetsprincip, som en Kubernetes `Service` giver workloa
 
 I workshoppen brugte du `Service` og port-forward uden at skulle tænke særligt over det underliggende netværk. I vores platform er det en bevidst del af setup'et.
 
-I [cilium/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/cilium/tasks/main.yml) bliver Talos patched, så standard-CNI og `kube-proxy` ikke bruges, og derefter bliver Cilium installeret.
+I `ansible/roles/talos/cilium/tasks/main.yml` i `DevOps-kubernetes-master` bliver Talos patched, så standard-CNI og `kube-proxy` ikke bruges, og derefter bliver Cilium installeret.
 
 Det er vigtigt af to grunde:
 
@@ -463,7 +463,7 @@ Det er med andre ord den del, der gør, at dine workloads faktisk kan opføre si
 
 I `kind` får du meget foræret. I Talos-setuppet er klientkonfiguration en tydeligere del af flowet.
 
-`Justfile` i [Justfile](/home/kasc/projects/DevOps-kubernetes-master/Justfile) viser det ret godt:
+`Justfile` i `DevOps-kubernetes-master` viser det ret godt:
 
 - `just kubeconfig ...` genererer adgang til Kubernetes
 - `just deploy-personal <initialer>` kører hele det personlige clusterflow
@@ -502,7 +502,7 @@ Den opdeling gør debugging og ansvar meget mere overskueligt.
 
 ## Forslag til videre bonus-øvelser
 
-1. Læs [deploy-infra.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/talos/deploy-infra.yml) og identificer, hvor control plane, bootstrap og worker provisioning sker.
-2. Læs [cluster.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/cluster.yml) og forklar forskellen på platform deployment og service deployment.
-3. Læs [cilium/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/cilium/tasks/main.yml) og forklar, hvorfor netværk ikke bare er en detalje i Kubernetes.
-4. Læs [bootstrap/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/bootstrap/tasks/main.yml) og forklar, hvorfor bootstrap kun må ske fra en control plane node ad gangen.
+1. Læs `ansible/playbooks/talos/deploy-infra.yml` i `DevOps-kubernetes-master` og identificer, hvor control plane, bootstrap og worker provisioning sker.
+2. Læs `ansible/playbooks/cluster.yml` i `DevOps-kubernetes-master` og forklar forskellen på platform deployment og service deployment.
+3. Læs `ansible/roles/talos/cilium/tasks/main.yml` i `DevOps-kubernetes-master` og forklar, hvorfor netværk ikke bare er en detalje i Kubernetes.
+4. Læs `ansible/roles/talos/bootstrap/tasks/main.yml` i `DevOps-kubernetes-master` og forklar, hvorfor bootstrap kun må ske fra en control plane node ad gangen.
