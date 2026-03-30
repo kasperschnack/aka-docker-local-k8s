@@ -39,7 +39,7 @@ def hello():
     cur.close()
     conn.close()
 
-    return f"Du er besoegende nr. {visit_count}"
+    return f"Du er besøgende nr. {visit_count}"
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 # Docker Workshop: Fra container til lokal Kubernetes
 
-Velkommen til en lokal variant af workshoppen. Ideen er den samme som i `aka-docker-azure`: du starter med Docker, bygger dine egne images og kører flere services sammen. Forskellen er, at anden halvdel ikke handler om Azure men om at køre workloads i et lokalt Kubernetes-cluster.
+Velkommen til denne hands-on workshop, hvor du arbejder dig fra Docker-grundbegreber til at køre workloads i et lokalt Kubernetes-cluster.
 
-Målet er ikke at bygge en perfekt platform. Målet er at gøre Kubernetes mindre abstrakt.
+Workshoppen er bygget til at gøre Kubernetes mindre abstrakt. Du starter med containere, bygger dine egne images, kører flere services sammen og flytter derefter den samme tankegang over i Kubernetes.
 
 Du kommer til at:
 - Forstå hvad containere er og hvorfor de er nyttige
@@ -12,19 +12,19 @@ Du kommer til at:
 - Deploye din app med `Deployment` og `Service`
 - Bruge `kubectl` til at se pods, logs og events
 
-## Laeringsmaal
+## Læringsmål
 
-### Du vil laere om:
+### Du vil lære om:
 
 - Docker fundamentals
   - Hvad er en container?
-  - Forskellen paa containere og virtuelle maskiner
+  - Forskellen på containere og virtuelle maskiner
   - Images, containers og lag
 
 - Praktisk Docker
-  - Installation og opsaetning
+  - Installation og opsætning
   - Docker CLI
-  - Volumes og netvaerk
+  - Volumes og netværk
 
 - Docker Compose
   - Flere services i samme setup
@@ -45,7 +45,7 @@ Du kommer til at:
 
 ### Trin 1: Kom i gang med Docker
 
-Docker Desktop er den nemmeste vej paa macOS og Windows. Paa Linux kan du installere Docker Engine direkte.
+På macOS og Windows er Docker Desktop den nemmeste måde at komme i gang på. På Linux kan du installere Docker Engine direkte.
 
 Ubuntu eksempel:
 
@@ -56,7 +56,7 @@ sudo systemctl enable --now docker
 sudo usermod -aG docker $USER
 ```
 
-Log ud og ind igen hvis du har koert `usermod`.
+Log ud og ind igen, hvis du har kørt `usermod`.
 
 ### Trin 2: Test at Docker virker
 
@@ -101,13 +101,13 @@ Besøg `http://localhost:5000`.
 ### Hvad er der i Dockerfile'en?
 
 - Vi starter fra `python:3.11-slim`
-- Vi kopierer `requirements.txt` foerst for bedre caching
+- Vi kopierer `requirements.txt` først for bedre caching
 - Vi installerer Flask
 - Vi kopierer resten af appen ind bagefter
 
 ## Volumes og bind mounts
 
-Containere er som udgangspunkt stateless. Hvis du vil gemme data mellem koersler, skal du gemme det uden for containerens eget filsystem.
+Containere er som udgangspunkt stateless. Hvis du vil gemme data mellem kørsler, skal du gemme dem uden for containerens eget filsystem.
 
 Volume eksempel:
 
@@ -127,7 +127,7 @@ cat output/hilsen.txt
 
 Der ligger et eksempel i [examples/flask-postgres](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-postgres).
 
-Koer det lokalt:
+Kør det lokalt:
 
 ```bash
 cd examples/flask-postgres
@@ -140,20 +140,20 @@ Det setup er vigtigt, fordi det ligner noget, du senere vil splitte op i Kuberne
 
 ## Sektion 2: Lokal Kubernetes
 
-Nu skifter vi perspektiv. I stedet for at sende vores image til en cloud-provider bruger vi et lokalt cluster, saa du kan laere de samme grundbegreber uden at betale for noget eller rydde op i cloud-ressourcer bagefter.
+Nu skifter vi perspektiv. I stedet for at sende vores image til en cloud-provider bruger vi et lokalt cluster, så du kan lære de samme grundbegreber uden at betale for noget eller rydde op i cloud-ressourcer bagefter.
 
 ## Hvorfor `kind`?
 
-`kind` betyder Kubernetes IN Docker. Det er et let setup til lokal laering:
+`kind` betyder Kubernetes IN Docker. Det er et let setup til lokal læring:
 
 - Hurtigt at oprette og slette
-- Kører paa din egen maskine
-- Godt til at laere `kubectl` og manifests
-- Ingen Azure-konto eller registry er noedvendig
+- Kører på din egen maskine
+- Godt til at lære `kubectl` og manifests
+- Ingen Azure-konto eller registry er nødvendig
 
-Hvis maalet er at forstaa begreberne, er `kind` et bedre første skridt end at hoppe direkte i managed Kubernetes.
+Hvis målet er at forstå begreberne, er `kind` et bedre første skridt end at hoppe direkte i managed Kubernetes.
 
-## Trin 3: Installer vaerktoejer
+## Trin 3: Installer værktøjer
 
 Du skal bruge:
 
@@ -201,7 +201,7 @@ kubectl get nodes
 
 ## Trin 5: Byg et image og load det ind i clusteret
 
-Vi bruger samme Flask-app som foer.
+Vi bruger samme Flask-app som før.
 
 ```bash
 cd examples/flask-demo
@@ -230,7 +230,7 @@ kubectl get pods -n workshop
 kubectl get services -n workshop
 ```
 
-## Trin 7: Gør appen tilgaengelig
+## Trin 7: Gør appen tilgængelig
 
 I et lokalt cluster er `port-forward` den enkleste vej:
 
@@ -240,18 +240,18 @@ kubectl port-forward -n workshop service/flask-demo 5000:5000
 
 Besøg `http://localhost:5000`.
 
-## Hvad er forskellen paa de vigtigste ressourcer?
+## Hvad er forskellen på de vigtigste ressourcer?
 
-- `Pod`: den konkrete instans der koerer dine containere
+- `Pod`: den konkrete instans, der kører dine containere
 - `Deployment`: beskriver hvordan pods skal oprettes og holdes i live
-- `Service`: giver en stabil netvaerksadresse til en eller flere pods
+- `Service`: giver en stabil netværksadresse til en eller flere pods
 - `Namespace`: en logisk opdeling i clusteret
 
 En god mental model er:
 
-- Docker koerer containere
-- Compose koerer flere containere sammen
-- Kubernetes holder workloads koerende og giver dig en deklarativ model
+- Docker kører containere
+- Compose kører flere containere sammen
+- Kubernetes holder workloads kørende og giver dig en deklarativ model
 
 ## Trin 8: Fejlfinding med `kubectl`
 
@@ -273,7 +273,7 @@ kubectl scale deployment flask-demo --replicas=3 -n workshop
 kubectl get pods -n workshop
 ```
 
-Nu kan du se, at Kubernetes holder tre ens pods koerende bag samme service.
+Nu kan du se, at Kubernetes holder tre ens pods kørende bag den samme service.
 
 ## Trin 10: Ryd op
 
@@ -289,26 +289,26 @@ Slet clusteret:
 kind delete cluster --name workshop
 ```
 
-## Ekstra oevelse: Fra Compose til Kubernetes
+## Ekstra øvelse: Fra Compose til Kubernetes
 
-I [examples/flask-postgres/k8s](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-postgres/k8s) ligger et bevidst simpelt eksempel paa samme app som i Compose-udgaven.
+I [examples/flask-postgres/k8s](/home/kasc/projects/k8s-session/aka-docker-local-k8s/examples/flask-postgres/k8s) ligger et bevidst simpelt eksempel på den samme app som i Compose-udgaven.
 
-Det er ikke et produktionssetup. Det er et laeringssetup.
+Det er ikke et produktionssetup. Det er et læringssetup.
 
 Ting du kan kigge efter:
 
 - Hvordan `db` i Compose bliver til en `Service`
-- Hvordan miljoevariabler flytter over i manifests
-- Hvorfor persistence hurtigt bliver et stoerre emne i Kubernetes
+- Hvordan miljøvariabler flytter over i manifests
+- Hvorfor persistence hurtigt bliver et større emne i Kubernetes
 
 ## Tjekliste
 
 ### Docker
-- [ ] Koere `hello-world`
+- [ ] Køre `hello-world`
 - [ ] Bygge et image lokalt
 - [ ] Starte en Flask-app i Docker
-- [ ] Forstaa forskellen paa volume og bind mount
-- [ ] Koere flere services med Compose
+- [ ] Forstå forskellen på volume og bind mount
+- [ ] Køre flere services med Compose
 
 ### Kubernetes lokalt
 - [ ] Installere `kubectl` og `kind`
@@ -316,11 +316,11 @@ Ting du kan kigge efter:
 - [ ] Loade et image ind i `kind`
 - [ ] Deploye med `kubectl apply`
 - [ ] Bruge `port-forward`
-- [ ] Laese logs og events
+- [ ] Læse logs og events
 - [ ] Skalere en deployment
 - [ ] Slette clusteret igen
 
-## Hvad blev ikke daekket?
+## Hvad blev ikke dækket?
 
 - Ingress controllers
 - Persistent volumes i dybden
@@ -330,7 +330,7 @@ Ting du kan kigge efter:
 - CI/CD
 - Managed Kubernetes som AKS, EKS eller GKE
 
-Det er bevidst. Foerst giver det mening at forstaa de lokale grundbegreber.
+Det er bevidst. Først giver det mening at forstå de lokale grundbegreber.
 
 Hvis du senere vil videre, er den naturlige progression:
 
@@ -342,18 +342,18 @@ Hvis du senere vil videre, er den naturlige progression:
 
 ## Sektion 3: Bonus - fra `kind` til vores egen Talos-platform
 
-`kind` er godt til at laere Kubernetes-begreberne hurtigt. Vores egen lokale platform er noget andet. Den handler ikke kun om at koere pods, men ogsaa om at bygge og drive selve clusteret.
+`kind` er godt til at lære Kubernetes-begreberne hurtigt. Vores egen lokale platform er noget andet. Den handler ikke kun om at køre pods, men også om at bygge og drive selve clusteret.
 
 Det er den vigtigste forskel:
 
-- I `kind` faar du et faerdigt cluster med det samme
+- I `kind` får du et færdigt cluster med det samme
 - I Talos-setuppet bygger vi clusteret bevidst op fra bunden
 
 Denne del er inspireret af vores setup i [DevOps-kubernetes-master](/home/kasc/projects/DevOps-kubernetes-master).
 
 ## Den mentale overgang
 
-Hvis du har lavet ovelserne ovenfor, kender du allerede de vigtigste Kubernetes-objekter:
+Hvis du har lavet øvelserne ovenfor, kender du allerede de vigtigste Kubernetes-objekter:
 
 - `Deployment`
 - `Pod`
@@ -365,7 +365,7 @@ I vores Talos-setup arbejder vi et niveau under det:
 - Hvordan control planes bliver oprettet
 - Hvordan worker nodes bliver oprettet
 - Hvordan clusteret bliver bootstrapped
-- Hvordan API endpoint og netvaerk bliver gjort stabile
+- Hvordan API endpoint og netværk bliver gjort stabile
 - Hvordan basis-komponenter som Cilium bliver installeret
 
 Kort sagt:
@@ -380,93 +380,93 @@ Det overordnede flow ligger i [cluster.yml](/home/kasc/projects/DevOps-kubernete
 Her er ideen:
 
 1. Talos-infrastruktur bliver provisioneret
-2. Talos bliver opgraderet hvis det er noedvendigt
+2. Talos bliver opgraderet, hvis det er nødvendigt
 3. Kubernetes-services bliver deployet bagefter
 
 Det er en vigtig opdeling, fordi den skiller platform fra workloads.
 
-- Platform er fx noder, bootstrap, netvaerk og kubeconfig
+- Platform er fx noder, bootstrap, netværk og kubeconfig
 - Workloads er fx services, controllers og applikationer
 
 ## Hvad sker der i praksis?
 
 Provisioneringsflowet ligger i [deploy-infra.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/talos/deploy-infra.yml).
 
-Det kan laeses som fire hovedtrin:
+Det kan læses som fire hovedtrin:
 
 1. Der laves nye Talos-secrets til personlige clusters
 2. Control plane-noder bliver oprettet
 3. Clusteret bliver bootstrapped
 4. Worker-noder og basis-services bliver gjort klar
 
-Det er meget taettere paa et rigtigt cluster-livscyklusforloeb end `kind`.
+Det er meget tættere på et rigtigt cluster-livscyklusforløb end `kind`.
 
 ## Control plane og worker nodes
 
-I workshoppen saa du pods og deployments. I Talos-setuppet skal vi foerst have maskinerne.
+I workshoppen så du pods og deployments. I Talos-setuppet skal vi først have maskinerne.
 
 Control plane provisioning sker i [control-plane/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/hypervisor/talos-vm/control-plane/tasks/main.yml).
 
 Der sker blandt andet dette:
 
 - Der genereres Talos machineconfig med `talosctl gen config`
-- Der patches netvaerk og hostname ind
+- Der patches netværk og hostname ind
 - Konfigurationen bliver lagt ind som VM boot-parameter
 - VM'en bliver oprettet i vSphere
 
-Worker provisioning i [worker-node/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/hypervisor/talos-vm/worker-node/tasks/main.yml) foelger samme moenster, men med worker-konfiguration.
+Worker provisioning i [worker-node/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/hypervisor/talos-vm/worker-node/tasks/main.yml) følger samme mønster, men med worker-konfiguration.
 
 Det er den konkrete version af:
 
 - `kind`: "lav et cluster"
-- Talos-platform: "byg de maskiner clusteret koerer paa"
+- Talos-platform: "byg de maskiner clusteret kører på"
 
 ## Bootstrap: hvornår bliver det til et rigtigt cluster?
 
 Det step ligger i [bootstrap/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/bootstrap/tasks/main.yml).
 
-Her bliver en control plane node brugt til at bootstrappe clusteret, og de andre control planes bliver bagefter koblet paa.
+Her bliver en control plane node brugt til at bootstrappe clusteret, og de andre control planes bliver bagefter koblet på.
 
 Det er et godt sted at forbinde teori og praksis:
 
-- Kubernetes API findes ikke rigtigt foer bootstrap
-- `kubectl` giver foerst mening naar control plane er oppe
+- Kubernetes API findes ikke rigtigt før bootstrap
+- `kubectl` giver først mening, når control plane er oppe
 - Et HA-control-plane er ikke bare "flere VM'er", men en samlet kontrolflade
 
 ## VIP og stabil API-adgang
 
-I `kind` taenker man ikke saa meget over API-endpointet. I et rigtigt setup betyder det mere.
+I `kind` tænker man ikke så meget over API-endpointet. I et rigtigt setup betyder det mere.
 
-I [configure-vip/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/configure-vip/tasks/main.yml) bliver control plane-konfigurationen patched, saa API'et peger paa en virtuel IP.
+I [configure-vip/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/configure-vip/tasks/main.yml) bliver control plane-konfigurationen patched, så API'et peger på en virtuel IP.
 
-Det loeser et konkret problem:
+Det løser et konkret problem:
 
 - Du vil ikke binde din kubeconfig og dine tools til en enkelt control plane node
 - Du vil have et stabilt endpoint selv hvis en node forsvinder
 
-Det er samme slags stabilitetsprincip som en Kubernetes `Service` giver workloads, bare paa clusterets egen kontrolflade.
+Det er samme slags stabilitetsprincip, som en Kubernetes `Service` giver workloads, bare på clusterets egen kontrolflade.
 
-## CNI og netvaerk: hvorfor Cilium betyder noget
+## CNI og netværk: hvorfor Cilium betyder noget
 
-I workshoppen brugte du `Service` og port-forward uden at skulle taenke saerligt over underliggende netvaerk. I vores platform er det en bevidst del af setup'et.
+I workshoppen brugte du `Service` og port-forward uden at skulle tænke særligt over det underliggende netværk. I vores platform er det en bevidst del af setup'et.
 
-I [cilium/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/cilium/tasks/main.yml) bliver Talos patched, saa standard-CNI og `kube-proxy` ikke bruges, og derefter bliver Cilium installeret.
+I [cilium/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/cilium/tasks/main.yml) bliver Talos patched, så standard-CNI og `kube-proxy` ikke bruges, og derefter bliver Cilium installeret.
 
 Det er vigtigt af to grunde:
 
 - Pods skal kunne tale sammen
 - Services skal kunne rout'es stabilt
 
-Det er med andre ord den del, der goer at dine workloads faktisk kan opfoere sig som et cluster og ikke bare som isolerede containere.
+Det er med andre ord den del, der gør, at dine workloads faktisk kan opføre sig som et cluster og ikke bare som isolerede containere.
 
 ## `kubeconfig` og `talosconfig`
 
-I `kind` faar du meget foraeret. I Talos-setuppet er klientkonfiguration en tydeligere del af flowet.
+I `kind` får du meget foræret. I Talos-setuppet er klientkonfiguration en tydeligere del af flowet.
 
 `Justfile` i [Justfile](/home/kasc/projects/DevOps-kubernetes-master/Justfile) viser det ret godt:
 
 - `just kubeconfig ...` genererer adgang til Kubernetes
-- `just deploy-personal <initialer>` koerer hele det personlige clusterflow
+- `just deploy-personal <initialer>` kører hele det personlige clusterflow
 - `just reset-personal <initialer>` rydder lokal Talos- og kubeconfig-state op
 
 Det er nyttigt at skelne mellem:
@@ -474,35 +474,35 @@ Det er nyttigt at skelne mellem:
 - `kubeconfig`: hvordan du snakker med Kubernetes API
 - `talosconfig`: hvordan du administrerer selve Talos-noderne
 
-Den skelnen findes ikke i den simple `kind`-oevelse, men den er vigtig i et mere realistisk setup.
+Den skelnen findes ikke i den simple `kind`-øvelse, men den er vigtig i et mere realistisk setup.
 
-## Hvordan bonusdelen haenger sammen med workshoppen
+## Hvordan bonusdelen hænger sammen med workshoppen
 
 Her er den korte mapping:
 
-- `docker run` laerer dig hvad en container er
-- `docker compose` laerer dig hvad flere services er
-- `kind` laerer dig de vigtigste Kubernetes-objekter
-- Talos-setuppet laerer dig hvordan clusteret bag objekterne bliver skabt og drevet
+- `docker run` lærer dig, hvad en container er
+- `docker compose` lærer dig, hvad flere services er
+- `kind` lærer dig de vigtigste Kubernetes-objekter
+- Talos-setuppet lærer dig, hvordan clusteret bag objekterne bliver skabt og drevet
 
 Det vil sige:
 
 - Sektion 1: containere
 - Sektion 2: workloads i Kubernetes
-- Sektion 3: platformen der koerer Kubernetes
+- Sektion 3: platformen der kører Kubernetes
 
 ## Hvis du vil koble det til vores egen hverdag
 
-Naar du arbejder i det rigtige setup, kan du taenke saadan her:
+Når du arbejder i det rigtige setup, kan du tænke sådan her:
 
 - Hvis problemet handler om pods, services, namespaces eller logs, er du i workload-laget
 - Hvis problemet handler om node bootstrap, Talos config, VIP eller Cilium, er du i platform-laget
 
-Den opdeling goer debugging og ansvar meget mere overskueligt.
+Den opdeling gør debugging og ansvar meget mere overskueligt.
 
-## Forslag til videre bonus-oevelser
+## Forslag til videre bonus-øvelser
 
-1. Laes [deploy-infra.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/talos/deploy-infra.yml) og identificer hvor control plane, bootstrap og worker provisioning sker.
-2. Laes [cluster.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/cluster.yml) og forklar forskellen paa platform deployment og service deployment.
-3. Laes [cilium/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/cilium/tasks/main.yml) og forklar hvorfor netvaerk ikke bare er en detalje i Kubernetes.
-4. Laes [bootstrap/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/bootstrap/tasks/main.yml) og forklar hvorfor bootstrap kun maa ske fra en control plane node ad gangen.
+1. Læs [deploy-infra.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/talos/deploy-infra.yml) og identificer, hvor control plane, bootstrap og worker provisioning sker.
+2. Læs [cluster.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/playbooks/cluster.yml) og forklar forskellen på platform deployment og service deployment.
+3. Læs [cilium/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/cilium/tasks/main.yml) og forklar, hvorfor netværk ikke bare er en detalje i Kubernetes.
+4. Læs [bootstrap/tasks/main.yml](/home/kasc/projects/DevOps-kubernetes-master/ansible/roles/talos/bootstrap/tasks/main.yml) og forklar, hvorfor bootstrap kun må ske fra en control plane node ad gangen.
