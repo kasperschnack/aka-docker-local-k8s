@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-demo
+  namespace: workshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-demo
+  template:
+    metadata:
+      labels:
+        app: flask-demo
+    spec:
+      containers:
+        - name: flask-demo
+          image: flask-demo:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_ENV
+              value: kind
+          ports:
+            - containerPort: 5000

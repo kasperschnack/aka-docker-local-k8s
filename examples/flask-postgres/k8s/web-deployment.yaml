@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-postgres
+  namespace: workshop-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-postgres
+  template:
+    metadata:
+      labels:
+        app: flask-postgres
+    spec:
+      containers:
+        - name: flask-postgres
+          image: flask-postgres:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: minsecret
+          ports:
+            - containerPort: 5000
