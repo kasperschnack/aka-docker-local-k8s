@@ -43,8 +43,8 @@ Eksempel i WSL:
 sudo apt update
 sudo apt install -y git
 git --version
-git clone https://github.com/kasperschnack/aka-docker-local-k8s.git
-cd aka-docker-local-k8s
+git clone https://github.com/kasperschnack/sdk-docker-kind.git
+cd sdk-docker-kind
 ```
 
 Når det er på plads, kan du fortsætte med Docker-installation og derefter arbejde videre i eksemplerne som `examples/flask-demo`.
